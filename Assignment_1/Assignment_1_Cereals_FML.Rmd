@@ -1,0 +1,75 @@
+---
+title: "Assignment_1_Cereals"
+author: "Shujath"
+date: "2025-09-07"
+output:
+  html_document: default
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**Load Libraries - Intsalling Packages**
+```{r}
+library(tidyverse)
+```
+
+
+## Task_1_&_2: Downloading and Importing Dataset of Cereals from CSV Files of Module-1 
+
+```{r}
+library(readr)
+Cereals <- read_csv("~/Desktop/Fundamentals of Machine Learning - Dr. Mostafa Kamali/Cereals.csv")
+head(Cereals)
+```
+
+
+## Task_3: Printing out descriptive statistics for a selection of quantitative and categorical variables 
+
+**Data Cleaning - Identifying the number of missing values in columns**
+```{r}
+colSums(is.na(Cereals)) 
+```
+**Replacing the missing values with 0**
+```{r}
+#Replacing missing values with 0 in selected and identified columns
+Cereals$carbo[is.na(Cereals$carbo)] <- 0
+Cereals$sugars[is.na(Cereals$sugars)] <- 0
+Cereals$potass[is.na(Cereals$potass)] <- 0
+
+#Re-running a check 
+colSums(is.na(Cereals))
+```
+
+
+## Task_4: Transformaing atleast one variable - Creating a new column to understand the protein to calorie ratio
+
+```{r}
+Cereals <- Cereals %>%
+  mutate(Protein_per_Calorie = protein / calories)
+summary(Cereals)
+```
+
+
+## Task_5: Plotting atleast one quantitaive variable, and one scatterplot
+
+**Histogram**
+```{r}
+ggplot(Cereals, aes(x = calories)) +
+  geom_histogram(binwidth = 10, fill = "steelblue", color = "black") +
+  labs(title = "Distribution of Calories in Cereals",
+       x = "Calories per Serving",
+       y = "Count of Cereals")
+```
+
+**Scatterplot**
+```{r}
+ggplot(Cereals, aes(x = sugars, y = rating, color = type)) +
+  geom_point(size = 3, alpha = 0.7) +
+  labs(title = "Relationship between Sugars and Rating",
+       x = "Sugar Content (grams)",
+       y = "Cereal Rating")
+```
+
